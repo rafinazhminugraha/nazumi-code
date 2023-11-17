@@ -4,6 +4,7 @@
     "workbench.iconTheme": "material-icon-theme",
     "editor.fontFamily": "Cascadia Code",
     "editor.fontSize": 13,
+    // "editor.fontLigatures": true,
 
     // "[python]": {
     //   "editor.background": "#000000"

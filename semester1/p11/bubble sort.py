@@ -12,7 +12,7 @@ import random as rd
 
 waktu_mulai = tm.perf_counter()
 
-arr_buble_sort = [rd.randint(1, 100000000) for _ in range (100000000)]
+arr_buble_sort = [rd.randint(1, 10000000) for _ in range (10000000)]
 
 waktu_selesai = tm.perf_counter()
 waktu_proses = waktu_selesai - waktu_mulai

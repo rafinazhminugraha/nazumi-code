@@ -33,7 +33,7 @@ waktu_mulai = tm.perf_counter()
 hasil_linear = linearSearch(array, nilai)
 
 waktu_selesai = tm.perf_counter()
-waktu_proses_linear = waktu_selesai - waktu_mulai
+waktu_proses_linear = (waktu_selesai - waktu_mulai) 
 
 print(f"waktu pemrosesan untuk mencari angka 60 menggunakan linear search adalah {waktu_proses_linear: .2} detik")
 
@@ -43,7 +43,7 @@ waktu_mulai = tm.perf_counter()
 
 hasil_binary = binarySearch(array, nilai)
 
-waktu_selesai = tm.perf_counter()
-waktu_proses_binary = waktu_selesai - waktu_mulai
+waktu_selesai = tm.perf_counter() 
+waktu_proses_binary = (waktu_selesai - waktu_mulai) 
 
 print(f"waktu pemrosesan untuk mencari angka 60 menggunakan binary search adalah {waktu_proses_binary: .2} detik")

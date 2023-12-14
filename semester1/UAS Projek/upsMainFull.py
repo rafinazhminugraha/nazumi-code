@@ -1,54 +1,135 @@
 from colorama import init, Style
 from colorama import init, Fore, Style
+# from tkinter import *
+# from PIL import ImageTk, Image
+# from ascii_magic import from_image_file
+import os
+import time
+# image_path = "path/to/your/image.jpg"
+# ascii_art = from_image_file(image_path)
+# print(ascii_art)
 
 init()
 
-data_pengguna = {}
-data_tambahan = {}
+pengguna_saat_ini = None
+data_pengguna = []
 status_login = False
+
+# def tampilkan_gambar(namafile):
+#     root = Tk()
+#     img = ImageTk.PhotoImage(Image.open(namafile))
+#     panel = Label(root, image = img)
+#     panel.pack(side = "bottom", fill = "both", expand = "yes")
+#     root.mainloop()
+
+def printMenu(*menu):
+    for i, item in enumerate(menu):
+        print(f"[{i+1}] {item.title()}")
+
+def printTitle():
+    os.system("cls")
+    print("━━━━━━━━━━━━━━━━━━━━")
+    print(f"{Fore.CYAN}\n        UPS")
+    print(Style.RESET_ALL)
+    # print(pengguna_saat_ini)
+    # print(type(pengguna_saat_ini))
+    # print(data_pengguna)
+    # print(type(data_pengguna))
+    print("━━━━━━━━━━━━━━━━━━━━")
+    print()
+    
+def inputanInvalid():
+    print(f"{Fore.RED}Inputan tidak valid")
+    print(Style.RESET_ALL)
+    time.sleep(1)
+    
+# def menuUtamaTitle():
+#     os.system("cls")
+#     print(f"{Fore.CYAN}\nUPS")
+#     print(Style.RESET_ALL)
 
 def welcomePage():
     global status_login
+    global pengguna_saat_ini
     while True:
-        print(f"{Fore.CYAN}\nUPS")
-        print(Style.RESET_ALL)
-        print("1. Login")
-        print("2. Register")
-        print("3. Exit")
+        printTitle()
+        printMenu("login", "register", "exit")
         print()
         pilihan_user = input("> ")
         if pilihan_user == "1":
-            status_login = loginPage()
-            if status_login:
-                break
+            loginPage()
+            break
         elif pilihan_user == "2":
             registerPage()
         elif pilihan_user == "3":
             print(f"{Fore.CYAN}Terimakasih Telah Menggunakan UPS")
             print(Style.RESET_ALL)
+            time.sleep(1)
+            os.system("cls")
             exit()
         else:
-            print(f"{Fore.RED}Inputan tidak valid")
-            print(Style.RESET_ALL)
+            inputanInvalid()
             
 
 def loginPage():
+    global status_login
+    global pengguna_saat_ini
     while True:
-        username = input("Username: ")
-        password = input("Password: ")
-        if username in data_pengguna and data_pengguna[username] == password:
-            print(f"{Fore.GREEN}Berhasil Login")
+        printTitle()
+        # username = input("Username: ")
+        # password = input("Password: ")
+        # if username in data_pengguna and data_pengguna[username] == password:
+        #     print(f"{Fore.GREEN}\nSelamat Datang {username}")
+        #     print(Style.RESET_ALL)
+        #     lanjutkan = input("Tekan Enter Untuk Melanjutkan")
+        #     print()
+        #     status_login = True
+        #     return status_login
+        nama = input("Nama: ")
+        while len(nama) < 1:
+            print(f"{Fore.RED}Username tidak boleh kosong")
             print(Style.RESET_ALL)
-            lanjutkan = input("Tekan Enter Untuk Melanjutkan")
-            print()
-            return True
+            time.sleep(1)
+            printTitle()
+            nama = input("Nama: ")
+        
+        password = input("Password: ")
+        while len(password) < 8:
+            print(f"{Fore.RED}Password minimal 8 karakter")
+            print(Style.RESET_ALL)
+            time.sleep(1)
+            printTitle()
+            print(f"Nama: {nama}")
+            password = input("Password: ")
+            
+        for pengguna in data_pengguna:
+            if pengguna["nama"] == nama and pengguna["password"] == password:
+                print(f"{Fore.GREEN}\nSelamat Datang {nama}")
+                print(Style.RESET_ALL)
+                input("Tekan Enter Untuk Melanjutkan")
+                print()
+                pengguna_saat_ini = pengguna
+                status_login = True
+                return status_login
+        # for user, password in data_pengguna.items():
+        #     if user == nama and password == password:
+        #         print(f"{Fore.GREEN}\nSelamat Datang {nama}")
+        #         print(Style.RESET_ALL)
+        #         input("Tekan Enter Untuk Melanjutkan")
+        #         print()
+        #         status_login = True
+        #         return status_login
+
+        # if not berhasil_login:
+        #     print(f"{Fore.RED}Gagal Login")
+        #     print(Style.RESET_ALL)
         else:
             print(f"{Fore.RED}Login gagal")
             print(Style.RESET_ALL)
+            time.sleep(1)
             while True:
-                print("1. Login ulang")
-                print("2. Register")
-                print("3. Kembali ke welcome page")
+                printTitle()
+                printMenu("login ulang", "register", "kembali ke menu utama" )
                 print()
                 pilihan_user = input("> ")
                 if pilihan_user == "1":
@@ -59,37 +140,94 @@ def loginPage():
                 elif pilihan_user == "3":
                     return False
                 else:
-                    print(f"{Fore.RED}Inputan tidak valid")
-                    print(Style.RESET_ALL)
+                    inputanInvalid()
                     
 
 def registerPage():
-    username = input("Username: ")
-    while len(username) < 1:
-        print("Username tidak boleh kosong")
-        username = input("Username: ")
+    global data_pengguna
+    printTitle()
+    nama = input("Nama: ")
+    while len(nama) < 1:
+        print(f"{Fore.RED}Tidak boleh kosong")
+        print(Style.RESET_ALL)
+        time.sleep(1)
+        printTitle()
+        nama = input("Nama: ")  
+        
     password = input("Password: ")
     while len(password) < 8:
-        print("Password harus memiliki minimal 8 karakter")
-        password = input("Masukkan password: ")
-    # nama = input("Nama: ")
-    # kelamin = input("Jenis Kelamin: ")
-    # alamat = input("Alamat: ")
-    # nomor_hp = input("Nomor Hp: ")
-    # riwayat_penyakit = input("Riwayat Penyakit (jika tidak ada - saja): ")
+        print(f"{Fore.RED}Password harus memiliki minimal 8 karakter")
+        print(Style.RESET_ALL)
+        time.sleep(1)
+        printTitle()
+        print(f"Nama: {nama}")
+        password = input("Password: ")
+        
+    kelamin = input("Kelamin: ")
+    while len(kelamin) < 1:
+        print(f"{Fore.RED}Tidak boleh kosong")
+        print(Style.RESET_ALL)
+        time.sleep(1)
+        printTitle()
+        print(f"Nama: {nama}")
+        print(f"Password: {password}")
+        kelamin = input("Kelamin: ")
+        
+    alamat = input("Alamat: ")
+    while len(alamat) < 1:
+        print(f"{Fore.RED}Tidak boleh kosong")
+        print(Style.RESET_ALL)
+        time.sleep(1)
+        printTitle()
+        print(f"Nama: {nama}")
+        print(f"Password: {password}")
+        print(f"Kelamin: {kelamin}")
+        alamat = input("Alamat: ")
+        
+    nomor_hp = input("Nomor HP: ")
+    while len(nomor_hp) < 1:
+        print(f"{Fore.RED}Tidak boleh kosong")
+        print(Style.RESET_ALL)
+        time.sleep(1)
+        printTitle()
+        print(f"Nama: {nama}")
+        print(f"Password: {password}")
+        print(f"Kelamin: {kelamin}")
+        print(f"Alamat: {alamat}")
+        nomor_hp = input("Nomor HP: ")
+        
+    riwayat_penyakit = input("Riwayat Penyakit (jika tidak ada - saja): ")
+    while len(riwayat_penyakit) < 1:
+        print(f'{Fore.RED}isi dengan strip "-" bila tidak ada')
+        print(Style.RESET_ALL)
+        time.sleep(2)
+        printTitle()
+        print(f"Nama: {nama}")
+        print(f"Password: {password}")
+        print(f"Kelamin: {kelamin}")
+        print(f"Alamat: {alamat}")
+        print(f"Nomor HP: {nomor_hp}")
+        riwayat_penyakit = input("Riwayat Penyakit (jika tidak ada - saja): ")
+        
     print()
-    data_pengguna[username] = password
-    # data_tambahan = {
-    #     'nama': nama,
-    #     'kelamin': kelamin,
-    #     'alamat': alamat,
-    #     'nomor_hp': nomor_hp,
-    #     'riwayat_penyakit': riwayat_penyakit
-    # }
+    pengguna = {
+        "nama": nama, 
+        "password": password, 
+        "kelamin": kelamin, 
+        "alamat": alamat, 
+        "nomor_hp": nomor_hp, 
+        "riwayat_penyakit": riwayat_penyakit}
+    
+    data_pengguna.append(pengguna)
+    
+    print(pengguna)
+    
     print(f"{Fore.GREEN}Pengguna berhasil didaftarkan.")
     print(Style.RESET_ALL)
+    time.sleep(1)
 
 def menuObat():
+    printTitle()
     
     list_obat = [
         {"nama": "Bisolvon", "Jenis Obat": "Obat Batuk", "Kemasan": "Botol", "Isi": "60 ml" },
@@ -104,6 +242,7 @@ def menuObat():
     ]
     
     def informasiObat(pencarianObat):
+        printTitle()
         print(f"Nama Obat: {pencarianObat['nama']}")
         print(f"Jenis Obat: {pencarianObat['Jenis Obat']}")
         print(f"Kemasan: {pencarianObat['Kemasan']}")
@@ -118,9 +257,7 @@ def menuObat():
             if pilihan_user == "1":
                 break
             else:
-                print(f"{Fore.RED}Inputan tidak valid")
-                print(f"{Fore.GREEN}Berhasil Login")
-                
+                inputanInvalid()
 
     def cariObat(nama):
         for i in list_obat:
@@ -129,18 +266,10 @@ def menuObat():
         return None
 
     while True:
-        print("1. Bisolvon")
-        print("2. Flutamol")
-        print("3. Sanmol")
-        print("4. Paramex")
-        print("5. Polysilane")
-        print("6. Aspirin")
-        print("7. Betadine")
-        print("8. Amoxicillin")
-        print("9. Tretinoin")
-        print("10. Kembali ke menu utama")
+        printTitle()
+        printMenu("bisolvon", "flutamol", "sanmol", "paramex", "polysilane", "aspirin", "betadine", "amoxicillin", "tretinoin", "kembali ke manu utama")
         print()
-        print("11. Search")
+        print("[11] Search")
         print()
         
         pilihan_user = input("> ")
@@ -162,7 +291,7 @@ def menuObat():
             
             informasiObat(hasil)
         elif pilihan_user == "5":
-            hasil = cariObat("Polysillane")
+            hasil = cariObat("Polysilane")
             
             informasiObat(hasil)
         elif pilihan_user == "6":
@@ -185,20 +314,28 @@ def menuObat():
             break
         elif pilihan_user == "11":
             while True:
+                printTitle()
                 nama_obat = input("Masukkan nama barang yang ingin dicari: ")
                 hasil = cariObat(nama_obat)
                 
                 if hasil != None:
                     informasiObat(hasil)
+                    break
+                elif len(nama_obat) < 1:
+                    print(f"{Fore.RED}Nama obat tidak boleh kosong")
+                    print(Style.RESET_ALL)
+                    time.sleep(1)
                 else:
-                    print("Obat tidak ditemukan")
+                    print(f"{Fore.RED}Obat tidak ditemukan")
+                    print(Style.RESET_ALL)
+                    time.sleep(1)
         else:
-            print(f"{Fore.RED}Inputan tidak valid")
-            print(Style.RESET_ALL)
+            inputanInvalid()
             
 def menuKegiatan():
     def donorDarahPage():
-        print(f"{Style.BRIGHT}\nDonor Darah: Sumbangkan Kebaikan, Sumbangkan Hidup")
+        printTitle()
+        print(f"{Style.BRIGHT}{Fore.BLUE}\nDonor Darah: Sumbangkan Kebaikan, Sumbangkan Hidup")
         print()
         print(f"""{Style.RESET_ALL}
 Selamat datang di halaman Donor Darah kami! Di sini, kami membangun jembatan 
@@ -240,11 +377,11 @@ cara bergabung dengan komunitas kami dapat kamu temukan di sini.""")
             if pilihan_user == "1":
                 break
             else:
-                print(f"{Fore.RED}Inputan tidak valid")
-                print(Style.RESET_ALL)
+                inputanInvalid()
 
     def vaksinasiPage():
-        print(f"{Style.BRIGHT}\nVaksinasi: Langkah Proaktif untuk Kesehatan dan Perlindungan")
+        printTitle()
+        print(f"{Style.BRIGHT}{Fore.BLUE}\nVaksinasi: Langkah Proaktif untuk Kesehatan dan Perlindungan")
         print()
         print(f"""{Style.RESET_ALL}
 Selamat datang di halaman Vaksinasi kami! Di sini, kami menekankan pentingnya 
@@ -276,17 +413,17 @@ dari gerakan perlindungan dan kesehatan bersama. Dengan vaksinasi, kita membuka 
 menuju masa depan yang lebih sehat dan aman bagi kita semua.""")
         while True:
             print()
-            print("1. kembali ke menu sebelumnya")
+            print("[1] kembali ke menu sebelumnya")
             pilihan_user = input("> ")
             
             if pilihan_user == "1":
                 break
             else:
-                print(f"{Fore.RED}Inputan tidak valid")
-                print(Style.RESET_ALL)
+                inputanInvalid()
     
     def senamBersamaPage():
-        print(f"{Style.BRIGHT}\nSenam Bersama: Langkah Menuju Kesehatan dan Kebahagiaan")
+        printTitle()
+        print(f"{Style.BRIGHT}{Fore.BLUE}\nSenam Bersama: Langkah Menuju Kesehatan dan Kebahagiaan")
         print()
         print(f"""{Style.RESET_ALL}
 Selamat datang di halaman Senam Bersama kami! 
@@ -324,14 +461,13 @@ komunitas senam kami. Bergabunglah dengan kami dan rasakan kebahagiaan dalam set
               """)
         while True:
             print()
-            print("1. kembali ke menu sebelumnya")
+            print("[1] kembali ke menu sebelumnya")
             pilihan_user = input("> ")
             
             if pilihan_user == "1":
                 break
             else:
-                print(f"{Fore.RED}Inputan tidak valid")
-                print(Style.RESET_ALL)
+                inputanInvalid()
     
     list_kegiatan = [
         {"nama_kegiatan": "Donor Darah", 
@@ -370,12 +506,8 @@ komunitas senam kami. Bergabunglah dengan kami dan rasakan kebahagiaan dalam set
     """)
     
     while True:
-        print("\nKegiatan UPS")
-        print()
-        print("1. Donor Darah")
-        print("2. Vaksinasi")
-        print("3. Senam Bersama")
-        print("4. kembali ke menu sebelumnya")
+        printTitle()
+        printMenu("donor darah", "vaksinasi", "senam bersama", "kembali ke menu sebelumnya")
         print()
         pilihan_user = input("> ")
         
@@ -388,20 +520,134 @@ komunitas senam kami. Bergabunglah dengan kami dan rasakan kebahagiaan dalam set
         elif pilihan_user == "4":
             break
         else:
-            print(f"{Fore.RED}Inputan tidak valid")
-            print(Style.RESET_ALL)
+            inputanInvalid()
+            
+def menuProfile():
+    global data_pengguna
+    global pengguna_saat_ini
     
+    def editProfile():
+        global pengguna_saat_ini
+        for i, pengguna in enumerate(data_pengguna):
+            if pengguna["nama"] == pengguna_saat_ini["nama"]:
+                printTitle()
+                print(f"{Style.BRIGHT}{Fore.BLUE}\nEdit Profile")
+                print(Style.RESET_ALL)
+                
+                nama_baru = input("Nama: ")
+                while len(nama_baru) < 1:
+                    print(f"{Fore.RED}Tidak boleh kosong")
+                    print(Style.RESET_ALL)
+                    time.sleep(1)
+                    printTitle()
+                    nama_baru = input("Nama: ")  
+                    
+                password_baru = input("Password: ")
+                while len(password_baru) < 8:
+                    print(f"{Fore.RED}Password harus memiliki minimal 8 karakter")
+                    print(Style.RESET_ALL)
+                    time.sleep(1)
+                    printTitle()
+                    print(f"Nama: {nama_baru}")
+                    password_baru = input("Password: ")
+                    
+                kelamin_baru = input("Kelamin: ")
+                while len(kelamin_baru) < 1:
+                    print(f"{Fore.RED}Tidak boleh kosong")
+                    print(Style.RESET_ALL)
+                    time.sleep(1)
+                    printTitle()
+                    print(f"Nama: {nama_baru}")
+                    print(f"Password: {password_baru}")
+                    kelamin_baru = input("Kelamin: ")
+                    
+                alamat_baru = input("Alamat: ")
+                while len(alamat_baru) < 1:
+                    print(f"{Fore.RED}Tidak boleh kosong")
+                    print(Style.RESET_ALL)
+                    time.sleep(1)
+                    printTitle()
+                    print(f"Nama: {nama_baru}")
+                    print(f"Password: {password_baru}")
+                    print(f"Kelamin: {kelamin_baru}")
+                    alamat_baru = input("Alamat: ")
+                    
+                nomor_hp_baru = input("Nomor HP: ")
+                while len(nomor_hp_baru) < 1:
+                    print(f"{Fore.RED}Tidak boleh kosong")
+                    print(Style.RESET_ALL)
+                    time.sleep(1)
+                    printTitle()
+                    print(f"Nama: {nama_baru}")
+                    print(f"Password: {password_baru}")
+                    print(f"Kelamin: {kelamin_baru}")
+                    print(f"Alamat: {alamat_baru}")
+                    nomor_hp_baru = input("Nomor HP: ")
+                    
+                riwayat_penyakit_baru = input("Riwayat Penyakit (jika tidak ada - saja): ")
+                while len(riwayat_penyakit_baru) < 1:
+                    print(f'{Fore.RED}isi dengan strip "-" bila tidak ada')
+                    print(Style.RESET_ALL)
+                    time.sleep(2)
+                    printTitle()
+                    print(f"Nama: {nama_baru}")
+                    print(f"Password: {password_baru}")
+                    print(f"Kelamin: {kelamin_baru}")
+                    print(f"Alamat: {alamat_baru}")
+                    print(f"Nomor HP: {nomor_hp_baru}")
+                    riwayat_penyakit_baru = input("Riwayat Penyakit (jika tidak ada - saja): ")
+                    
+                print()
+                data_pengguna[i] = {
+                    "nama": nama_baru, 
+                    "password": password_baru, 
+                    "kelamin": kelamin_baru, 
+                    "alamat": alamat_baru, 
+                    "nomor_hp": nomor_hp_baru, 
+                    "riwayat_penyakit": riwayat_penyakit_baru}
+                
+                pengguna_saat_ini = {
+                    "nama": nama_baru, 
+                    "password": password_baru, 
+                    "kelamin": kelamin_baru, 
+                    "alamat": alamat_baru, 
+                    "nomor_hp": nomor_hp_baru, 
+                    "riwayat_penyakit": riwayat_penyakit_baru}
+                
+                print(f"{Fore.GREEN}Biodata Pengguna Berhasil Di Update.")
+                print(Style.RESET_ALL)
+                time.sleep(1)
+                printTitle
+                break
+                
+    while True:            
+        global pengguna_saat_ini
+        printTitle()
+        print(f"{Style.BRIGHT}{Fore.BLUE}\nProfile")
+        print()
+        print(f"""{Style.RESET_ALL}
+Nama: {pengguna_saat_ini["nama"]}
+Kelamin: {pengguna_saat_ini["kelamin"]}
+Alamat: {pengguna_saat_ini["alamat"]}
+Nomor HP: {pengguna_saat_ini["nomor_hp"]}
+Riwayat Penyakit: {pengguna_saat_ini["riwayat_penyakit"]}""")
+        print()
+        printMenu("edit profile", "kembali ke manu sebelumnya")
+        pilihan_user = input("> ")
+        
+        if pilihan_user == "1":
+            editProfile()
+        elif pilihan_user == "2":
+            break
+        else:
+            inputanInvalid()
+
 def menuUtama():
     global status_login
+    global pengguna_saat_ini
     while True:
-        print("Selamat Datang Para Pasien")
-        print()
-        print("1. Obat")
-        print("2. Kegiatan")
-        print("3. Profile")
-        print("4. Galeri")
-        print("5. Tentang Kami")
-        print("6. Logout")
+        printTitle()
+        printMenu("obat", "kegiatan", "profile", "tentang kami", "logout")
         print()
         
         pilihan_user = input("> ")
@@ -410,25 +656,27 @@ def menuUtama():
             menuObat()
         elif pilihan_user == "2":
             menuKegiatan()
-        # elif pilihan_user == "3":
-        #     menuProfile()
-        # elif pilihan_user == "4":
-        #     menuGaleri()
+        elif pilihan_user == "3":
+            menuProfile()
         # elif pilihan_user == "5":
         #     menuTentangKami()
-        elif pilihan_user == "6":
+        elif pilihan_user == "5":
             status_login = False
+            pengguna_saat_ini = None
             return status_login
         else:
-            print(f"{Fore.RED}Inputan tidak valid")
-            print(Style.RESET_ALL)
+            inputanInvalid()
 
         
 while True:
     if not status_login:
+        os.system("cls")
         welcomePage()
     else:
+        os.system("cls")
         menuUtama()
+
+
 
 
 # while True:

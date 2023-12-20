@@ -1,0 +1,1 @@
+nyoba perpindahaan file dan skarang diubah lgiTulisan ini baru ditambahkan dengan metode append pada file yang belum ada

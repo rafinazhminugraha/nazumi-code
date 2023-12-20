@@ -42,7 +42,7 @@ def inputanInvalid():
     print(f"{Fore.RED}Inputan tidak valid")
     print(Style.RESET_ALL)
     time.sleep(1)
-    
+
 # def menuUtamaTitle():
 #     os.system("cls")
 #     print(f"{Fore.CYAN}\nUPS")
@@ -69,7 +69,7 @@ def welcomePage():
             exit()
         else:
             inputanInvalid()
-            
+
 
 def loginPage():
     global status_login
@@ -141,7 +141,7 @@ def loginPage():
                     return False
                 else:
                     inputanInvalid()
-                    
+         
 
 def registerPage():
     global data_pengguna
@@ -228,7 +228,7 @@ def registerPage():
 
 def menuObat():
     printTitle()
-    
+
     list_obat = [
         {"nama": "Bisolvon", "Jenis Obat": "Obat Batuk", "Kemasan": "Botol", "Isi": "60 ml" },
         {"nama": "Flutamol", "Jenis Obat": "Obat Flu", "Kemasan": "Botol", "Isi": "50 ml" },
